@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: fescar-order-examples
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+      config:
+        server-addr: 127.0.0.1:8848
+        file-extension: yaml
+        shared-dataids: datasource-fescar-druid.yaml
+        refreshable-dataids: datasource-fescar-druid.yaml

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>distributed-transaction-examples</artifactId>
+        <groupId>com.vergilyn.examples</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>alibaba-fescar-examples</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>fescar-account-examples</module>
+        <module>fescar-business-examples</module>
+        <module>fescar-order-examples</module>
+        <module>fescar-storage-examples</module>
+        <module>fescar-common-examples</module>
+    </modules>
+
+    <properties>
+        <alibaba-fescar-all.version>0.4.0</alibaba-fescar-all.version>
+        <alibaba-druid-starter.version>1.1.14</alibaba-druid-starter.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>com.alibaba.fescar</groupId>
+                <artifactId>fescar-all</artifactId>
+                <version>${alibaba-fescar-all.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${alibaba-druid-starter.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba.fescar</groupId>
+            <artifactId>fescar-spring</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+        </dependency>
+    </dependencies>
+</project>
