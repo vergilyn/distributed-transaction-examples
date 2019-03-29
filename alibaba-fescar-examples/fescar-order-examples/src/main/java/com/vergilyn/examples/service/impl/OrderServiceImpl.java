@@ -2,6 +2,8 @@ package com.vergilyn.examples.service.impl;
 
 import java.util.UUID;
 
+import javax.transaction.Transactional;
+
 import com.vergilyn.examples.dto.AccountDTO;
 import com.vergilyn.examples.dto.OrderDTO;
 import com.vergilyn.examples.entity.Order;
@@ -27,6 +29,7 @@ public class OrderServiceImpl implements OrderService {
     private AccountFeignService accountFeignService;
 
     @Override
+    @Transactional
     public ObjectResponse<OrderDTO> createOrder(OrderDTO orderDTO) {
         ObjectResponse<OrderDTO> response = new ObjectResponse<>();
         //扣减用户账户
@@ -40,7 +43,7 @@ public class OrderServiceImpl implements OrderService {
         //生成订单
         Order order = new Order();
         BeanUtils.copyProperties(orderDTO, order);
-        order.setCount(orderDTO.getOrderCount());
+        order.setTotal(orderDTO.getOrderTotal());
         order.setAmount(orderDTO.getOrderAmount().doubleValue());
         try {
             orderRepository.save(order);

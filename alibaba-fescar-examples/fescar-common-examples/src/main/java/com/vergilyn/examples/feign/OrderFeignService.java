@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author VergiLyn
  * @date 2019-03-28
  */
-@FeignClient(name = FescarConstant.APPLICATION_ORDER, path = "order")
+@FeignClient(name = FescarConstant.APPLICATION_ORDER)
 public interface OrderFeignService {
 
     /** 创建订单 */
-    @RequestMapping(path = "create-order", method = RequestMethod.POST)
+    @RequestMapping(path = "/order/create-order", method = RequestMethod.POST)
     ObjectResponse<OrderDTO> createOrder(@RequestBody OrderDTO orderDTO);
 }

@@ -18,7 +18,7 @@ public class OrderDTO implements Serializable {
 
     private String commodityCode;
 
-    private Integer orderCount;
+    private Integer orderTotal;
 
     private BigDecimal orderAmount;
 }

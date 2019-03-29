@@ -2,6 +2,7 @@ package com.vergilyn.examples.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,7 +18,7 @@ import lombok.ToString;
  * @date 2019-03-28
  */
 @Entity
-@Table(name = "account")
+@Table(name = "t_account")
 @Data
 @NoArgsConstructor
 @ToString
@@ -27,7 +28,9 @@ public class Account implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column(name = "user_id")
     private String userId;
+    @Column(name = "amount")
     private Double amount;
 
 }

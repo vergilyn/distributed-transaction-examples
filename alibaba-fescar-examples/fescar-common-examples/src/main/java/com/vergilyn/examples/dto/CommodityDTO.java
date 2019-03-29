@@ -17,5 +17,5 @@ public class CommodityDTO implements Serializable {
 
     private String name;
 
-    private Integer count;
+    private Integer total;
 }

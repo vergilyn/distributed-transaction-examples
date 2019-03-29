@@ -2,6 +2,7 @@ package com.vergilyn.examples.entity;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,7 +18,7 @@ import lombok.ToString;
  * @date 2019-03-28
  */
 @Entity
-@Table(name = "storage")
+@Table(name = "t_storage")
 @Data
 @NoArgsConstructor
 @ToString
@@ -26,8 +27,14 @@ public class Storage implements Serializable{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "commodity_code")
     private String commodityCode;
+
+    @Column(name = "name")
     private String name;
+
+    @Column(name = "total")
     private Integer total;
 
 }

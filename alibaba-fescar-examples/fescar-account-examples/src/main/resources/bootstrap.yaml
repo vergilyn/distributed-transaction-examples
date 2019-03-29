@@ -10,3 +10,7 @@ spring:
         file-extension: yaml
         shared-dataids: datasource-fescar-druid.yaml
         refreshable-dataids: datasource-fescar-druid.yaml
+
+feign:
+  hystrix:
+    enabled: false

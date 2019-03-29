@@ -18,6 +18,6 @@ public interface StorageRepository extends CrudRepository<Storage, Integer> {
      * @Return:
      */
     @Modifying
-    @Query("update Storage set total = ?2 where commodityCode = ?1")
+    @Query("update Storage set total = total - ?2 where commodityCode = ?1")
     int decreaseStorage(String commodityCode, Integer total);
 }

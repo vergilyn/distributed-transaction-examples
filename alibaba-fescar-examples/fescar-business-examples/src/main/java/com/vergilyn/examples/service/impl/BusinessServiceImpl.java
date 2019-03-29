@@ -35,14 +35,14 @@ public class BusinessServiceImpl implements BusinessService {
         //1、扣减库存
         CommodityDTO commodityDTO = new CommodityDTO();
         commodityDTO.setCommodityCode(businessDTO.getCommodityCode());
-        commodityDTO.setCount(businessDTO.getCount());
+        commodityDTO.setTotal(businessDTO.getTotal());
         ObjectResponse storageResponse = storageFeignService.decreaseStorage(commodityDTO);
 
         //2、创建订单
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setUserId(businessDTO.getUserId());
         orderDTO.setCommodityCode(businessDTO.getCommodityCode());
-        orderDTO.setOrderCount(businessDTO.getCount());
+        orderDTO.setOrderTotal(businessDTO.getTotal());
         orderDTO.setOrderAmount(businessDTO.getAmount());
         ObjectResponse<OrderDTO> response = orderFeignService.createOrder(orderDTO);
 

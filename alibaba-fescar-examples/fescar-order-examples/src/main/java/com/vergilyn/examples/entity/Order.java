@@ -1,5 +1,6 @@
 package com.vergilyn.examples.entity;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,16 +14,26 @@ import lombok.Data;
  * @date 2019-03-28
  */
 @Entity
-@Table(name = "order")
+@Table(name = "t_order")
 @Data
 public class Order {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(name = "order_no")
     private String orderNo;
+
+    @Column(name = "user_id")
     private String userId;
+
+    @Column(name = "commodity_code")
     private String commodityCode;
-    private Integer count;
+
+    @Column(name = "total")
+    private Integer total;
+
+    @Column(name = "amount")
     private Double amount;
 }

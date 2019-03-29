@@ -13,10 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
  * @author VergiLyn
  * @date 2019-03-28
  */
-@FeignClient(name = FescarConstant.APPLICATION_ACCOUNT, path = "account")
+@FeignClient(name = FescarConstant.APPLICATION_ACCOUNT)
 public interface AccountFeignService {
 
     /** 从账户扣钱 */
-    @RequestMapping(path = "decrease-account", method = RequestMethod.POST)
+    @RequestMapping(path = "/account/decrease-account", method = RequestMethod.POST)
     ObjectResponse<Void> decreaseAccount(@RequestBody AccountDTO accountDTO);
 }

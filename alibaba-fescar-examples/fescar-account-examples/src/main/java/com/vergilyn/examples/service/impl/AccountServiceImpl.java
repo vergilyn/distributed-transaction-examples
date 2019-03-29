@@ -1,5 +1,7 @@
 package com.vergilyn.examples.service.impl;
 
+import javax.transaction.Transactional;
+
 import com.vergilyn.examples.dto.AccountDTO;
 import com.vergilyn.examples.repository.AccountRepository;
 import com.vergilyn.examples.response.ObjectResponse;
@@ -18,6 +20,7 @@ public class AccountServiceImpl implements AccountService {
     private AccountRepository accountRepository;
 
     @Override
+    @Transactional
     public ObjectResponse decreaseAccount(AccountDTO accountDTO) {
         int account = accountRepository.decreaseAccount(accountDTO.getUserId(), accountDTO.getAmount().doubleValue());
 
