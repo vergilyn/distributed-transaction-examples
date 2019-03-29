@@ -1,6 +1,8 @@
-# alibaba-fescar-examples
+# alibaba-fescar-examples 
+# 不能全局回滚！！！！！！
 
 - [fescar-samples Github]
+- [springboot+fescar注意事项](https://segmentfault.com/a/1190000018693315)
 
 1. fescar的`DatasourceProxy`貌似只支持DruidDataSource
 
@@ -43,6 +45,33 @@ spring:
         login-username: admin
         login-password: admin
 ```
+
+## 测试
+
+1. 正常请求及结果
+```
+POST http://127.0.0.1:8080/business/buy
+{
+	"userId": 1,
+	"commodityCode": "C201901140001",
+	"name": "name",
+	"total": 20,
+	"amount": 400
+}
+
+RESPONSE >>>>
+{
+    "status": 200,
+    "message": "成功",
+    "data": null
+}
+
+DATABASE >>>>
+t_account.amount: 4000 - 400 = 3600
+t_order: insert one row, {userId=1,commodity_code=C201901140001, total=20, amount=400}
+t_storage.total: 1000 - 20 = 980
+```
+
 
 ## 备注
 ### 1. Error creating bean with name 'dataSourceProxy': Requested bean is currently in creation: Is there an unresolvable circular reference?

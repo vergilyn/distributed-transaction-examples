@@ -2,6 +2,7 @@ package com.vergilyn.examples.service.impl;
 
 import javax.transaction.Transactional;
 
+import com.alibaba.fescar.core.context.RootContext;
 import com.vergilyn.examples.dto.CommodityDTO;
 import com.vergilyn.examples.repository.StorageRepository;
 import com.vergilyn.examples.response.ObjectResponse;
@@ -22,6 +23,8 @@ public class StorageServiceImpl implements StorageService {
     @Override
     @Transactional
     public ObjectResponse<Void> decreaseStorage(CommodityDTO commodityDTO) {
+        System.out.println("开始全局事务，XID = " + RootContext.getXID());
+
         int storage = storageRepository.decreaseStorage(commodityDTO.getCommodityCode(), commodityDTO.getTotal());
 
         return storage > 0 ? ObjectResponse.success(): ObjectResponse.failure();

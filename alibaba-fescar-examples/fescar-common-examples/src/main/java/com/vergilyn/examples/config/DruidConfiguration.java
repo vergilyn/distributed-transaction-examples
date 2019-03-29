@@ -1,8 +1,5 @@
 package com.vergilyn.examples.config;
 
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-
 import com.alibaba.druid.pool.DruidDataSource;
 import com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceBuilder;
 import com.alibaba.fescar.rm.datasource.DataSourceProxy;
@@ -11,28 +8,31 @@ import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
  * @author VergiLyn
  * @date 2019-03-28
  */
 @Configuration
+@EnableTransactionManagement
+@EnableJpaRepositories(entityManagerFactoryRef = "entityManagerFactory", transactionManagerRef = "transactionManager",
+basePackages = "com.vergilyn.examples.repository")
 public class DruidConfiguration {
 
     @Bean
     @Primary
-    public DataSource dataSource(){
+    public DruidDataSource druidDataSource(){
         return DruidDataSourceBuilder.create().build();
     }
 
-    @Bean
-    public DataSourceProxy dataSourceProxy(DataSource dataSource){
-        return new DataSourceProxy((DruidDataSource) dataSource);
+    @Bean(name = "dataSource")
+    public DataSourceProxy dataSourceProxy(DruidDataSource druidDataSource){
+        return new DataSourceProxy(druidDataSource);
     }
 
     @Bean
@@ -53,8 +53,8 @@ public class DruidConfiguration {
                 .build();
     }
 
-    @Bean
+/*    @Bean
     public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
-    }
+    }*/
 }

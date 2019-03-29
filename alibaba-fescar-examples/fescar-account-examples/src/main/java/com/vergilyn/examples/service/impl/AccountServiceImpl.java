@@ -2,6 +2,7 @@ package com.vergilyn.examples.service.impl;
 
 import javax.transaction.Transactional;
 
+import com.alibaba.fescar.core.context.RootContext;
 import com.vergilyn.examples.dto.AccountDTO;
 import com.vergilyn.examples.repository.AccountRepository;
 import com.vergilyn.examples.response.ObjectResponse;
@@ -22,6 +23,8 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public ObjectResponse decreaseAccount(AccountDTO accountDTO) {
+        System.out.println("开始全局事务，XID = " + RootContext.getXID());
+
         int account = accountRepository.decreaseAccount(accountDTO.getUserId(), accountDTO.getAmount().doubleValue());
 
         return account > 0 ? ObjectResponse.success() : ObjectResponse.failure();

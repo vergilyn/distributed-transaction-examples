@@ -1,5 +1,7 @@
 package com.vergilyn.examples.service.impl;
 
+import javax.transaction.Transactional;
+
 import com.alibaba.fescar.core.context.RootContext;
 import com.alibaba.fescar.spring.annotation.GlobalTransactional;
 import com.vergilyn.examples.constants.FescarConstant;
@@ -29,7 +31,8 @@ public class BusinessServiceImpl implements BusinessService {
     private boolean flag;
 
     @Override
-    @GlobalTransactional(timeoutMills = 300000, name = FescarConstant.APPLICATION_BUSINESS)
+    @GlobalTransactional(timeoutMills = 300000, name = FescarConstant.TX_SERVICE_GROUP)
+    @Transactional
     public ObjectResponse handleBusiness(BusinessDTO businessDTO) {
         System.out.println("开始全局事务，XID = " + RootContext.getXID());
         //1、扣减库存
@@ -47,9 +50,9 @@ public class BusinessServiceImpl implements BusinessService {
         ObjectResponse<OrderDTO> response = orderFeignService.createOrder(orderDTO);
 
         //打开注释测试事务发生异常后，全局回滚功能
-//        if (!flag) {
-//            throw new RuntimeException("测试抛异常后，分布式事务回滚！");
-//        }
+        if (!flag) {
+            throw new RuntimeException("测试抛异常后，分布式事务回滚！");
+        }
 
         if (storageResponse.getStatus() != 200 || response.getStatus() != 200) {
             throw new DefaultException(RspStatusEnum.FAIL);

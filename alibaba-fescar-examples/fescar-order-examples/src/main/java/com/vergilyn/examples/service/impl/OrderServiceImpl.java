@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import javax.transaction.Transactional;
 
+import com.alibaba.fescar.core.context.RootContext;
 import com.vergilyn.examples.dto.AccountDTO;
 import com.vergilyn.examples.dto.OrderDTO;
 import com.vergilyn.examples.entity.Order;
@@ -31,6 +32,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public ObjectResponse<OrderDTO> createOrder(OrderDTO orderDTO) {
+        System.out.println("开始全局事务，XID = " + RootContext.getXID());
+
         ObjectResponse<OrderDTO> response = new ObjectResponse<>();
         //扣减用户账户
         AccountDTO accountDTO = new AccountDTO();
