@@ -23,7 +23,22 @@
     <properties>
         <alibaba-fescar-all.version>0.4.0</alibaba-fescar-all.version>
         <alibaba-druid-starter.version>1.1.14</alibaba-druid-starter.version>
+        <spring-cloud-alibaba-dependencies.version>2.1.0.BUILD-SNAPSHOT</spring-cloud-alibaba-dependencies.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>http://repo.spring.io/libs-snapshot-local</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
+    </repositories>
 
     <dependencyManagement>
         <dependencies>
@@ -31,6 +46,14 @@
                 <groupId>com.alibaba.fescar</groupId>
                 <artifactId>fescar-all</artifactId>
                 <version>${alibaba-fescar-all.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${spring-cloud-alibaba-dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -51,13 +74,13 @@
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba.fescar</groupId>
-            <artifactId>fescar-spring</artifactId>
+            <groupId>com.alibaba</groupId>
+            <artifactId>druid-spring-boot-starter</artifactId>
         </dependency>
 
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>druid-spring-boot-starter</artifactId>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-fescar</artifactId>
         </dependency>
 
         <dependency>
@@ -65,4 +88,5 @@
             <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
         </dependency>
     </dependencies>
+
 </project>

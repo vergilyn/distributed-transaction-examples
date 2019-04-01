@@ -10,7 +10,9 @@ spring:
         file-extension: yaml
         shared-dataids: datasource-fescar-druid.yaml
         refreshable-dataids: datasource-fescar-druid.yaml
-
+    alibaba:
+      fescar:
+        tx-service-group: fescar_vergilyn_tx_group
 feign:
   hystrix:
     enabled: false

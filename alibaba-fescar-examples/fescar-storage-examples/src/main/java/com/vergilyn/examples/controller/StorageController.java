@@ -6,6 +6,7 @@ import com.vergilyn.examples.service.StorageService;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,5 +30,10 @@ public class StorageController {
     ObjectResponse decreaseStorage(@RequestBody CommodityDTO commodityDTO){
         log.info("请求库存微服务：{}",commodityDTO.toString());
         return storageService.decreaseStorage(commodityDTO);
+    }
+
+    @GetMapping("/get")
+    ObjectResponse get(String commodityCode){
+        return storageService.getByCommodityCode(commodityCode);
     }
 }

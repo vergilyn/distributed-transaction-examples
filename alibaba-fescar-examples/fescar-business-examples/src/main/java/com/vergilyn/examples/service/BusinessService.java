@@ -11,4 +11,6 @@ public interface BusinessService {
 
     ObjectResponse handleBusiness(BusinessDTO businessDTO);
 
+    ObjectResponse writeTransaction();
+
 }

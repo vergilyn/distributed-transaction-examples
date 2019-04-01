@@ -21,4 +21,6 @@ public class BusinessDTO implements Serializable {
     private Integer total;
 
     private BigDecimal amount;
+
+    private Boolean rollback;
 }

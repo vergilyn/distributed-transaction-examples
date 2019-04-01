@@ -2,6 +2,7 @@
 # 不能全局回滚！！！！！！
 
 - [fescar-samples Github]
+- [fescar AT-Mode](https://github.com/alibaba/fescar/wiki/AT-Mode)
 - [springboot+fescar注意事项](https://segmentfault.com/a/1190000018693315)
 
 1. fescar的`DatasourceProxy`貌似只支持DruidDataSource
@@ -46,6 +47,17 @@ spring:
         login-password: admin
 ```
 
+## 读/写隔离
+- [fescar AT-Mode]
+
+
+大致流程体现：
+1. 某个服务的事务是真实已提交。例如，线程A执行decrease-storage完，其实数据库中已经是修改后的值（storage#total = 980）。
+2. 会生成undo_log(回滚日志表)， 如果全局事务回滚成功，会删除undo_log的记录。如果全局事务提交成功，则保留undo_log的记录。 （为什么要这么设计 删除/保留？）
+3. 回滚： 分析undo_log，执行 update/delete 进行回滚操作。
+
+
+
 ## 测试
 
 1. 正常请求及结果
@@ -72,6 +84,17 @@ t_order: insert one row, {userId=1,commodity_code=C201901140001, total=20, amoun
 t_storage.total: 1000 - 20 = 980
 ```
 
+2. 异常全局回滚
+```
+RESPONSE >>>>
+{
+    "timestamp": "2019-04-01T02:08:04.897+0000",
+    "status": 500,
+    "error": "Internal Server Error",
+    "message": "测试抛异常后，分布式事务回滚！",
+    "path": "/business/buy"
+}
+```
 
 ## 备注
 ### 1. Error creating bean with name 'dataSourceProxy': Requested bean is currently in creation: Is there an unresolvable circular reference?
@@ -150,3 +173,4 @@ com.vergilyn.examples.config.FescarConfiguration#transactionManager
 
 
 [fescar-samples Github]: https://github.com/fescar-group/fescar-samples
+[fescar AT-Mode]: (https://github.com/alibaba/fescar/wiki/AT-Mode)
