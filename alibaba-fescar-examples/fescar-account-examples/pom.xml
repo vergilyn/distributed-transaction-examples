@@ -12,11 +12,4 @@
     <artifactId>fescar-account-examples</artifactId>
     <packaging>jar</packaging>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.vergilyn.examples</groupId>
-            <artifactId>fescar-autoconfigure-all</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
 </project>

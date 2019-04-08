@@ -9,7 +9,7 @@ import com.vergilyn.examples.dto.AccountDTO;
 import com.vergilyn.examples.dto.OrderDTO;
 import com.vergilyn.examples.entity.Order;
 import com.vergilyn.examples.enums.RspStatusEnum;
-import com.vergilyn.examples.feign.AccountFeignService;
+import com.vergilyn.examples.feign.AccountFeignClient;
 import com.vergilyn.examples.repository.OrderRepository;
 import com.vergilyn.examples.response.ObjectResponse;
 import com.vergilyn.examples.service.OrderService;
@@ -27,11 +27,11 @@ public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
     @Autowired
-    private AccountFeignService accountFeignService;
+    private AccountFeignClient accountFeignService;
 
     @Override
     @Transactional
-    public ObjectResponse<OrderDTO> createOrder(OrderDTO orderDTO) {
+    public ObjectResponse<OrderDTO> create(OrderDTO orderDTO) {
         System.out.println("开始全局事务，XID = " + RootContext.getXID());
 
         ObjectResponse<OrderDTO> response = new ObjectResponse<>();
@@ -39,7 +39,7 @@ public class OrderServiceImpl implements OrderService {
         AccountDTO accountDTO = new AccountDTO();
         accountDTO.setUserId(orderDTO.getUserId());
         accountDTO.setAmount(orderDTO.getOrderAmount());
-        ObjectResponse objectResponse = accountFeignService.decreaseAccount(accountDTO);
+        ObjectResponse objectResponse = accountFeignService.decrease(accountDTO);
 
         //生成订单号
         orderDTO.setOrderNo(UUID.randomUUID().toString().replace("-",""));

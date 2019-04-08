@@ -7,14 +7,14 @@ import javax.transaction.Transactional;
 
 import com.alibaba.fescar.core.context.RootContext;
 import com.alibaba.fescar.spring.annotation.GlobalTransactional;
-import com.vergilyn.examples.constants.FescarConstant;
+import com.vergilyn.examples.constants.FescarConstants;
 import com.vergilyn.examples.dto.BusinessDTO;
 import com.vergilyn.examples.dto.CommodityDTO;
 import com.vergilyn.examples.dto.OrderDTO;
 import com.vergilyn.examples.enums.RspStatusEnum;
 import com.vergilyn.examples.exception.DefaultException;
-import com.vergilyn.examples.feign.OrderFeignService;
-import com.vergilyn.examples.feign.StorageFeignService;
+import com.vergilyn.examples.feign.OrderFeignClient;
+import com.vergilyn.examples.feign.StorageFeignClient;
 import com.vergilyn.examples.response.ObjectResponse;
 import com.vergilyn.examples.service.BusinessService;
 
@@ -30,25 +30,25 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class BusinessServiceImpl implements BusinessService {
     @Autowired
-    private StorageFeignService storageFeignService;
+    private StorageFeignClient storageFeignClient;
     @Autowired
-    private OrderFeignService orderFeignService;
+    private OrderFeignClient orderFeignClient;
 
     private AtomicInteger thread = new AtomicInteger(0);
 
     @Override
-    @GlobalTransactional(timeoutMills = 10000, name = FescarConstant.TX_SERVICE_GROUP + "-business")
+    @GlobalTransactional(timeoutMills = 10000, name = FescarConstants.TX_SERVICE_GROUP + "-business")
     @Transactional
-    public ObjectResponse handleBusiness(BusinessDTO businessDTO) {
+    public ObjectResponse buy(BusinessDTO businessDTO) {
         System.out.println("开始全局事务，XID = " + RootContext.getXID());
         //1、扣减库存
         CommodityDTO commodityDTO = new CommodityDTO();
         commodityDTO.setCommodityCode(businessDTO.getCommodityCode());
         commodityDTO.setTotal(businessDTO.getTotal());
 
-        // System.out.printf("storage-%d >>>> %s", thread.get(), storageFeignService.get(commodityDTO.getCommodityCode()).getData());
+        // System.out.printf("storage-%d >>>> %s", thread.get(), storageFeignClient.get(commodityDTO.getCommodityCode()).getData());
 
-        ObjectResponse storageResponse = storageFeignService.decreaseStorage(commodityDTO);
+        ObjectResponse storageResponse = storageFeignClient.decrease(commodityDTO);
 
         //2、创建订单
         OrderDTO orderDTO = new OrderDTO();
@@ -56,7 +56,7 @@ public class BusinessServiceImpl implements BusinessService {
         orderDTO.setCommodityCode(businessDTO.getCommodityCode());
         orderDTO.setOrderTotal(businessDTO.getTotal());
         orderDTO.setOrderAmount(businessDTO.getAmount());
-        ObjectResponse<OrderDTO> response = orderFeignService.createOrder(orderDTO);
+        ObjectResponse<OrderDTO> response = orderFeignClient.create(orderDTO);
 
         // true: 测试事务发生异常后，全局回滚功能
         if (Optional.ofNullable(businessDTO.getRollback()).orElse(Boolean.FALSE)) {
@@ -71,7 +71,7 @@ public class BusinessServiceImpl implements BusinessService {
     }
 
     @Override
-    @GlobalTransactional(timeoutMills = 5000, name = FescarConstant.TX_SERVICE_GROUP + "-write")
+    @GlobalTransactional(timeoutMills = 5000, name = FescarConstants.TX_SERVICE_GROUP + "-write")
     @Transactional
     public ObjectResponse writeTransaction() {
         long begin = System.currentTimeMillis();
@@ -91,7 +91,7 @@ public class BusinessServiceImpl implements BusinessService {
         log.trace("sleep-01 >>>>> first:" + first + ", sleep: " + millis);
 
 
-        ObjectResponse response = storageFeignService.decreaseStorage(commodityDTO);
+        ObjectResponse response = storageFeignClient.decrease(commodityDTO);
 
         millis = 1000L;
         if (first){

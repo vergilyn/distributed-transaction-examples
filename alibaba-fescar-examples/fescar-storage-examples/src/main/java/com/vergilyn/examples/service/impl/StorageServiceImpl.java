@@ -25,10 +25,10 @@ public class StorageServiceImpl implements StorageService {
 
     @Override
     @Transactional
-    public ObjectResponse<Void> decreaseStorage(CommodityDTO commodityDTO) {
+    public ObjectResponse<Void> decrease(CommodityDTO commodityDTO) {
         System.out.println("开始全局事务，XID = " + RootContext.getXID());
 
-        int storage = storageRepository.decreaseStorage(commodityDTO.getCommodityCode(), commodityDTO.getTotal());
+        int storage = storageRepository.decrease(commodityDTO.getCommodityCode(), commodityDTO.getTotal());
 
         return storage > 0 ? ObjectResponse.success() : ObjectResponse.failure();
     }

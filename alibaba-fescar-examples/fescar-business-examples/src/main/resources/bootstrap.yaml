@@ -19,4 +19,3 @@ feign:
 logging:
   level:
     com.vergilyn.examples: trace
-  path: log

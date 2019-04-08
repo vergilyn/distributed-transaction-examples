@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: raincat-account-examples
+  profiles:
+    active: druid
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+feign:
+  hystrix:
+    enabled: false

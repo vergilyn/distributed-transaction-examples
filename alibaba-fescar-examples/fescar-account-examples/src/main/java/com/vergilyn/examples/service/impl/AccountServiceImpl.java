@@ -22,10 +22,10 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     @Transactional
-    public ObjectResponse decreaseAccount(AccountDTO accountDTO) {
+    public ObjectResponse decrease(AccountDTO accountDTO) {
         System.out.println("开始全局事务，XID = " + RootContext.getXID());
 
-        int account = accountRepository.decreaseAccount(accountDTO.getUserId(), accountDTO.getAmount().doubleValue());
+        int account = accountRepository.decrease(accountDTO.getUserId(), accountDTO.getAmount().doubleValue());
 
         return account > 0 ? ObjectResponse.success() : ObjectResponse.failure();
     }

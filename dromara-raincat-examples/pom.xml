@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <parent>
+        <artifactId>distributed-transaction-examples</artifactId>
+        <groupId>com.vergilyn.examples</groupId>
+        <version>1.0.0-SNAPSHOT</version>
+    </parent>
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>dromara-raincat-examples</artifactId>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>raincat-account-examples</module>
+        <module>raincat-business-examples</module>
+        <module>raincat-order-examples</module>
+        <module>raincat-storage-examples</module>
+        <module>raincat-manager</module>
+    </modules>
+
+    <properties>
+        <raincat-cloud.version>2.0.0-RELEASE</raincat-cloud.version>
+    </properties>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>org.dromara</groupId>
+                <artifactId>raincat-springcloud</artifactId>
+                <version>${raincat-cloud.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.dromara</groupId>
+                <artifactId>raincat-spring-boot-starter-springcloud</artifactId>
+                <version>${raincat-cloud.version}</version>
+            </dependency>
+
+
+        </dependencies>
+    </dependencyManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.vergilyn.examples</groupId>
+            <artifactId>common-dependency-all</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+
+    </dependencies>
+
+</project>
