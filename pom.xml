@@ -10,6 +10,7 @@
     <version>1.0.0-SNAPSHOT</version>
     <modules>
         <module>alibaba-fescar-examples</module>
+        <module>common-dependency-all</module>
     </modules>
 
     <repositories>
@@ -21,7 +22,20 @@
             <name>Nexus aliyun</name>
             <url>http://maven.aliyun.com/nexus/content/groups/public</url>
         </repository>
+
+        <repository>
+            <id>spring-snapshots</id>
+            <name>Spring Snapshots</name>
+            <url>http://repo.spring.io/libs-snapshot-local</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+        </repository>
     </repositories>
+
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,6 +46,9 @@
         <spring-cloud-dependencies.version>Greenwich.RELEASE</spring-cloud-dependencies.version>
         <spring-cloud-alibaba.version>0.2.1.RELEASE</spring-cloud-alibaba.version>
         <nacos-client.version>0.9.1</nacos-client.version>
+        <alibaba-druid-starter.version>1.1.14</alibaba-druid-starter.version>
+        <alibaba-fescar-all.version>0.4.1</alibaba-fescar-all.version>
+        <alibaba-spring-cloud-dependencies.version>2.1.0.BUILD-SNAPSHOT</alibaba-spring-cloud-dependencies.version>
 
         <google-guava.version>24.1-jre</google-guava.version>
         <projectlombok.version>1.18.4</projectlombok.version>
@@ -59,6 +76,20 @@
                 <version>${spring-cloud-dependencies.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>${alibaba-spring-cloud-dependencies.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid-spring-boot-starter</artifactId>
+                <version>${alibaba-druid-starter.version}</version>
             </dependency>
 
             <!-- spring-cloud-alibaba -->
@@ -92,6 +123,8 @@
                 <groupId>com.alibaba.fescar</groupId>
                 <artifactId>fescar-all</artifactId>
                 <version>${alibaba-fescar-all.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
             </dependency>
 
             <dependency>
