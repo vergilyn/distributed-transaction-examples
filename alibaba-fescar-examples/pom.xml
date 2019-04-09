@@ -17,6 +17,7 @@
         <module>fescar-business-examples</module>
         <module>fescar-order-examples</module>
         <module>fescar-storage-examples</module>
+        <module>fescar-server</module>
     </modules>
 
     <properties>

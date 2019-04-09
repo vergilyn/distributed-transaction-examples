@@ -34,7 +34,7 @@ public class FescarTest {
                 .build();
     }
 
-    @Test(invocationCount = 4, threadPoolSize = 4)
+    @Test(invocationCount = 1, threadPoolSize = 1)
     public void businessBuy() {
         int incr = count.getAndIncrement();
 
@@ -45,7 +45,7 @@ public class FescarTest {
         param.setName("test-" + incr);
         param.setTotal(40);
         param.setAmount(new BigDecimal("400.00"));
-        param.setRollback(incr % 2 == 0);
+        param.setRollback(true);
 
         post.addHeader("Content-type","application/json; charset=utf-8");
         post.setHeader("Accept", "application/json");

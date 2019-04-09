@@ -1,5 +1,4 @@
 # alibaba-fescar-examples 
-# 不能全局回滚！！！！！！
 
 - [fescar-samples Github]
 - [fescar AT-Mode](https://github.com/alibaba/fescar/wiki/AT-Mode)
@@ -50,11 +49,40 @@ spring:
 ## 读/写隔离
 - [fescar AT-Mode]
 
+### 写隔离
+- 一阶段本地事务提交前，需要确保先拿到 **全局锁** 。
+- 拿不到 **全局锁** ，不能提交本地事务。
+- 拿 **全局锁** 的尝试被限制在一定范围内，超出范围将放弃，并回滚本地事务，释放本地锁。
 
-大致流程体现：
-1. 某个服务的事务是真实已提交。例如，线程A执行decrease-storage完，其实数据库中已经是修改后的值（storage#total = 980）。
-2. 会生成undo_log(回滚日志表)， 如果全局事务回滚成功，会删除undo_log的记录。如果全局事务提交成功，则保留undo_log的记录。 （为什么要这么设计 删除/保留？）
-3. 回滚： 分析undo_log，执行 update/delete 进行回滚操作。
+（更详细的参考wiki）**感觉这是导致吞吐量过低的主要原因！**
+
+1. **脏写**
+由wiki可知（可能描述更好）。
+tx1在1-phase后，会释放**本地锁**。同时，tx2可以在1-phase获取到**本地锁**，但tx2无法获取到**全局锁**（tx1并未释放**全局锁**），所以tx2无法提交本地事务。
+
+tx1如果是2-phase-rollback，那么需要重新获取该数据的**本地锁**，但此时被tx2持有，同时tx2在等待**全局锁**。
+
+此时tx1无法获取到**本地锁**，所以tx1的分支回滚会失败，并一直重试。
+直到tx2等待获取**全局锁**超时，放弃获取**全局锁**并回滚本地事务和释放**本地锁**。
+tx1之后的某次重试能成功获取到**本地锁**，最终回滚成功。
+
+整个过程，**全局锁** 在tx1结束前一直被tx1持有，所以不会发生**脏写**的问题。
+
+
+2. **全局锁** 
+wiki中写到: 提交前，向 TC 注册分支：申请 product 表中，主键值等于 1 的记录的 全局锁 。
+
+疑问: 这个 全局锁 指的到底是什么？
+之前理解类似表锁，但wiki中的这句话更像是行锁（提升吞吐量）。并且感觉 行锁，更合理。
+
+
+3. 2-phase-rollback（二阶段回滚）
+  1、undo_log表中的记录 更新前、更新后的数据。
+  2、如果是update，则根据记录中的 更新前数据，生成`update xx set filed = value`。如果是insert，则执行`delete`，
+  例如:
+    storage#total = 1000。 扣减库存 total = total - 40 = 960。此时undo_log中记录了 `before: {total: 1000}, after: {total: 960}`。
+    当2-phase-rollback，则解析生成回滚SQL `update storage set total = 1000`。
+  源代码参考: `com.alibaba.fescar.rm.datasource.undo.UndoLogManager#undo(DataSourceProxy dataSourceProxy, String xid, long branchId)`
 
 
 
