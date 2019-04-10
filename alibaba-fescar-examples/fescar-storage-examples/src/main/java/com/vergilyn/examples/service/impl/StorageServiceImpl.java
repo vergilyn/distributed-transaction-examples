@@ -10,6 +10,7 @@ import com.vergilyn.examples.repository.StorageRepository;
 import com.vergilyn.examples.response.ObjectResponse;
 import com.vergilyn.examples.service.StorageService;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
  * @date 2019-03-28
  */
 @Service
+@Slf4j
 public class StorageServiceImpl implements StorageService {
     @Autowired
     private StorageRepository storageRepository;
@@ -26,9 +28,12 @@ public class StorageServiceImpl implements StorageService {
     @Override
     @Transactional
     public ObjectResponse<Void> decrease(CommodityDTO commodityDTO) {
-        System.out.println("开始全局事务，XID = " + RootContext.getXID());
+        log.info("全局事务 begin, XID = {}, {}", RootContext.getXID(), commodityDTO.toString());
 
         int storage = storageRepository.decrease(commodityDTO.getCommodityCode(), commodityDTO.getTotal());
+
+        log.info("全局事务 end, XID = {}, {}", RootContext.getXID(), commodityDTO.toString());
+
 
         return storage > 0 ? ObjectResponse.success() : ObjectResponse.failure();
     }

@@ -18,11 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = FescarConstants.APPLICATION_STORAGE)
 public interface StorageFeignClient {
 
-    /** 扣减库存 */
     @RequestMapping(path = "/storage/decrease", method = RequestMethod.POST)
     ObjectResponse<Void> decrease(@RequestBody CommodityDTO commodityDTO);
 
-    /** 扣减库存 */
     @RequestMapping(path = "/storage/get", method = RequestMethod.GET)
     ObjectResponse<StorageDTO> get(@RequestParam("commodityCode") String commodityCode);
 }

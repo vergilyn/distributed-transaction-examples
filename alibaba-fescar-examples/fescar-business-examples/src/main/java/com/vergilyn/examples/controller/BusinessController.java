@@ -1,6 +1,7 @@
 package com.vergilyn.examples.controller;
 
 import com.vergilyn.examples.dto.BusinessDTO;
+import com.vergilyn.examples.dto.StorageDTO;
 import com.vergilyn.examples.response.ObjectResponse;
 import com.vergilyn.examples.service.BusinessService;
 
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -37,5 +39,23 @@ public class BusinessController {
     @GetMapping("/write")
     public ObjectResponse writeTransaction(){
         return businessService.writeTransaction();
+    }
+
+    @GetMapping("/decrease-storage")
+    public ObjectResponse<Void> decreaseStorage(Long beforeMillis, Long afterMillis, @RequestParam(required = false, defaultValue = "false") boolean rollback){
+        ObjectResponse<Void> response;
+        try {
+            response = businessService.decreaseStorage(beforeMillis, afterMillis, rollback);
+        }catch (Exception e){
+            response = ObjectResponse.failureOther(e.getMessage());
+            e.printStackTrace();
+        }
+        log.info("response >>>> {}", response);
+        return response;
+    }
+
+    @GetMapping("/get-storage")
+    public ObjectResponse<StorageDTO> getStorage(Long beforeMillis, Long afterMillis){
+        return businessService.getStorage(beforeMillis, afterMillis);
     }
 }

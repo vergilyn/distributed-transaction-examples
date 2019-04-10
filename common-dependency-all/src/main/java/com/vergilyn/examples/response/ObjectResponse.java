@@ -49,4 +49,12 @@ public class ObjectResponse<T> extends BaseResponse implements Serializable {
 
         return response;
     }
+
+    public static <T> ObjectResponse<T> failureOther(String errorMsg){
+        ObjectResponse<T> response = new ObjectResponse<>();
+        response.setMessage(errorMsg);
+        response.setStatus(RspStatusEnum.FAIL_OTHER.getCode());
+
+        return response;
+    }
 }

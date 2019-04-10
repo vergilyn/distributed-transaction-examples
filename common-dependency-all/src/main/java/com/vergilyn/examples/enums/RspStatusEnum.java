@@ -16,7 +16,10 @@ public enum  RspStatusEnum {
     /**
      * Exception rsp status enum.
      */
-    EXCEPTION(500,"系统异常");
+    EXCEPTION(500,"系统异常"),
+
+    ROLLBACK(400, "transaction-rollback"),
+    FAIL_OTHER(401, "失败");
 
     private int code;
 

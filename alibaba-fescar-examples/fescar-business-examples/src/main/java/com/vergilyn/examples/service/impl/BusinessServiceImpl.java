@@ -7,10 +7,12 @@ import javax.transaction.Transactional;
 
 import com.alibaba.fescar.core.context.RootContext;
 import com.alibaba.fescar.spring.annotation.GlobalTransactional;
+import com.vergilyn.examples.constants.DataConstants;
 import com.vergilyn.examples.constants.FescarConstants;
 import com.vergilyn.examples.dto.BusinessDTO;
 import com.vergilyn.examples.dto.CommodityDTO;
 import com.vergilyn.examples.dto.OrderDTO;
+import com.vergilyn.examples.dto.StorageDTO;
 import com.vergilyn.examples.enums.RspStatusEnum;
 import com.vergilyn.examples.exception.DefaultException;
 import com.vergilyn.examples.feign.OrderFeignClient;
@@ -106,8 +108,47 @@ public class BusinessServiceImpl implements BusinessService {
         return response;
     }
 
+    @Override
+    @GlobalTransactional(timeoutMills = 5000, name = "business-decrease-storage")
+    public ObjectResponse<Void> decreaseStorage(Long beforeMillis, Long afterMillis, boolean rollback) {
+        log.info("business-decrease-storage >>>> beforeMillis: {}, afterMillis: {}, rollback: {}", beforeMillis, afterMillis, rollback);
+        //1、扣减库存
+        CommodityDTO commodityDTO = new CommodityDTO();
+        commodityDTO.setCommodityCode(DataConstants.STORAGE_CODE);
+        commodityDTO.setTotal(40);
+        commodityDTO.setName(String.valueOf(rollback));
+
+        sleep(beforeMillis);
+
+        ObjectResponse<Void> response = storageFeignClient.decrease(commodityDTO);
+
+        sleep(afterMillis);
+
+        if (rollback){
+            throw new DefaultException(RspStatusEnum.ROLLBACK);
+        }
+
+        return response;
+    }
+
+    @Override
+    @GlobalTransactional(timeoutMills = 5000, name = "business-get-storage")
+    public ObjectResponse<StorageDTO> getStorage(Long beforeMillis, Long afterMillis) {
+        sleep(beforeMillis);
+
+        ObjectResponse<StorageDTO> response = storageFeignClient.get(DataConstants.STORAGE_CODE);
+
+        sleep(afterMillis);
+
+        return response;
+    }
+
 
     private void sleep(long millis){
+        if (millis <= 0){
+            return;
+        }
+
         try {
             Thread.sleep(millis);
         } catch (InterruptedException e) {

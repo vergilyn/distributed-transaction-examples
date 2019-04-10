@@ -1,6 +1,7 @@
 package com.vergilyn.examples.service;
 
 import com.vergilyn.examples.dto.BusinessDTO;
+import com.vergilyn.examples.dto.StorageDTO;
 import com.vergilyn.examples.response.ObjectResponse;
 
 /**
@@ -13,4 +14,7 @@ public interface BusinessService {
 
     ObjectResponse writeTransaction();
 
+    ObjectResponse<Void> decreaseStorage(Long beforeMillis, Long afterMillis, boolean rollback);
+
+    ObjectResponse<StorageDTO> getStorage(Long beforeMillis, Long afterMillis);
 }

@@ -27,9 +27,16 @@ public class StorageController {
      * 扣减库存
      */
     @PostMapping("/decrease")
-    ObjectResponse decrease(@RequestBody CommodityDTO commodityDTO){
-        log.info("请求库存微服务：{}", commodityDTO.toString());
-        return storageService.decrease(commodityDTO);
+    ObjectResponse<Void> decrease(@RequestBody CommodityDTO commodityDTO){
+        ObjectResponse<Void> response = null;
+        try {
+            response = storageService.decrease(commodityDTO);
+        }catch (Exception e){
+            response = ObjectResponse.failureOther(e.getMessage());
+            e.printStackTrace();
+        }
+
+        return response;
     }
 
     @GetMapping("/get")
