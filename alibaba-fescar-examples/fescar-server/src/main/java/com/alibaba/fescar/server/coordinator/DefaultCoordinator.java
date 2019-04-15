@@ -67,6 +67,8 @@ import static com.alibaba.fescar.core.exception.TransactionExceptionCode.FailedT
 
 /**
  * The type Default coordinator.
+ *
+ * @author sharajava
  */
 public class DefaultCoordinator extends AbstractTCInboundHandler
     implements TransactionMessageHandler, ResourceManagerInbound {

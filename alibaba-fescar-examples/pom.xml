@@ -21,7 +21,7 @@
     </modules>
 
     <properties>
-        <alibaba-fescar-all.version>0.4.1</alibaba-fescar-all.version>
+        <alibaba-fescar-all.version>0.4.2</alibaba-fescar-all.version>
     </properties>
 
     <dependencyManagement>

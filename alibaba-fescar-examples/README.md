@@ -3,10 +3,16 @@
 - [fescar-samples Github]
 - [fescar AT-Mode](https://github.com/alibaba/fescar/wiki/AT-Mode)
 - [springboot+fescar注意事项](https://segmentfault.com/a/1190000018693315)
+- [更开放的分布式事务 | 蚂蚁金服共建 Seata 社区](https://juejin.im/post/5ca41ad16fb9a05e746f7af5)
 
-1. fescar的`DatasourceProxy`貌似只支持DruidDataSource
+1. 以 **高效** 并且对业务 **0 侵入** 的方式，解决 **微服务** 场景下面临的分布式事务问题。
 
-2. nacos-config: datasource-fescar-druid.yaml
+fescar(Fast & EaSy Commit And Rollback)改名为seata(Simple、Extensible、Autonomous、Transaction、Architecture)。
+
+
+2. fescar的`DatasourceProxy`貌似只支持DruidDataSource
+
+3. nacos-config: datasource-fescar-druid.yaml
 ```
 # datasource-fescar-druid.yaml
 spring:
@@ -200,6 +206,7 @@ com.vergilyn.examples.config.FescarConfiguration#transactionManager
 尝试过跟着实例化的顺序做代码上的修改，并未找到解决方法。
 
 
+[seate Github]: https://github.com/seata/seata 
 [fescar-samples Github]: https://github.com/fescar-group/fescar-samples
 [fescar AT-Mode]: (https://github.com/alibaba/fescar/wiki/AT-Mode)
 
